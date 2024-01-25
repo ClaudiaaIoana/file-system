@@ -53,6 +53,8 @@ Logging is implemented using the thread-safe function `write_message_log`. The l
 
 - The function `create_path` is a modified version of the function found at [Stack Overflow](https://stackoverflow.com/questions/2336242/recursive-mkdir-system-call-on-unix) for creating a file and its path simultaneously.
 
+- Throughout the entire application, there are code snippets adopted from the PSO laboratories accesible at [WIKI](https://wiki.mta.ro/c/3/pso/start)
+
 ## Running the Server
 
 
@@ -109,9 +111,10 @@ MOVE <file_path_source> <file_path_destination>
 UPDATE <start_poz> <content>               
 ```
 
-Print files containing the specified word or nothing if none are found. Note that a file may contain a word without being in the top ten words.
-
-**SEARCH** <word>                                       
+- Print files containing the specified word or nothing if none are found. Note that a file may contain a word without being in the top ten words.
+```
+SEARCH <word> 
+```                                      
 
 ## Makefile
 To create the server and client executable files run in terminal:
