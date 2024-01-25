@@ -11,7 +11,6 @@ int     max_num_connections;
 int     current_connections=0;
 char    root_dir[32];
 bool    modif_file=false;
-pthread_cond_t  free_conections;
 pthread_cond_t  updated;
 
 pthread_mutex_t mutex_con;
@@ -96,7 +95,6 @@ int main(int argc, char* argv[])
     }
 
     pthread_mutex_init(&mutex_con, NULL);
-    //pthread_cond_init(&free_conections, NULL);
     pthread_mutex_init(&mutex_list, NULL);
     pthread_cond_init(&updated, NULL);
     pthread_mutex_init(&mutex_update, NULL);
@@ -735,6 +733,17 @@ void exec_download(int socket, int flags)
             pthread_mutex_unlock(&mutex_list);
             return;
         }
+        if(!file->has_permision)
+        {
+            code=0x2;
+            bytesWrite = send(socket, &code, sizeof(code),0);
+            if (bytesWrite == -1) {
+                perror("write");
+            }
+
+            pthread_mutex_unlock(&mutex_list);
+            return;
+        }
         size=file->size;
         
         while (file->write>0)
@@ -864,6 +873,17 @@ void exec_delete(int socket)
                 perror("write");
                 exit(EXIT_FAILURE);
             }
+            pthread_mutex_unlock(&mutex_list);
+            return;
+        }
+        if(!file->has_permision)
+        {
+            code=0x2;
+            uint32_t bytesWrite = send(socket, &code, sizeof(code),0);
+            if (bytesWrite == -1) {
+                perror("write");
+            }
+            pthread_mutex_unlock(&mutex_list);
             return;
         }
     pthread_mutex_unlock(&mutex_list);
@@ -938,8 +958,20 @@ void exec_move(int socket)
                 perror("write");
                 exit(EXIT_FAILURE);
             }
+            pthread_mutex_unlock(&mutex_list);
             return;
             //TOFO send status func
+        }
+        if(!file->has_permision)
+        {
+            code=0x2;
+            size_t bytesWrite = send(socket, &code, sizeof(code),0);
+            if (bytesWrite == -1) {
+                perror("write");
+            }
+
+            pthread_mutex_unlock(&mutex_list);
+            return;
         }
         size=file->size;
     pthread_mutex_unlock(&mutex_list);
@@ -1071,6 +1103,17 @@ void exec_update(int socket)
         if(!file)
         {
             code=0x1;
+            bytesWrite = send(socket, &code, sizeof(code),0);
+            if (bytesWrite == -1) {
+                perror("write");
+            }
+
+            pthread_mutex_unlock(&mutex_list);
+            return;
+        }
+        if(!file->has_permision)
+        {
+            code=0x2;
             bytesWrite = send(socket, &code, sizeof(code),0);
             if (bytesWrite == -1) {
                 perror("write");

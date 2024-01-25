@@ -233,11 +233,9 @@ void freeMinHeap(MinHeap* minHeap)
 
 int create_path(const char*rootDir, const char*filePath)
 {
-    // Construct the full path by combining the root directory and file path
     char fullPath[256]; 
     snprintf(fullPath, sizeof(fullPath), "%s%s", rootDir, filePath);
 
-    // Create the directories if they don't exist
     char *dirPath = strdup(fullPath);
     assert(dirPath && *dirPath);
     

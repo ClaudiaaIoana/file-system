@@ -15,6 +15,7 @@
 #include <sys/signalfd.h>
 
 #define PORT 8080
+#define IP_ADDRESS "192.168.226.128"
 #define BUFFER_SIZE 1024
 
 void printStringWithNewline(int length, const char* str) {
@@ -221,14 +222,11 @@ void delete(int socket)
 
     uint32_t status;
     if (recv(socket, &status, sizeof(uint32_t), 0) < 0) {
-        perror("Send failed");
+        perror("Recv failed");
         exit(EXIT_FAILURE);
     }
     
-    if(!check_status(status))
-    {
-        return;
-    }
+    check_status(status);
 }
 
 void move(int socket)
@@ -272,10 +270,7 @@ void move(int socket)
         exit(EXIT_FAILURE);
     }
     
-    if(!check_status(status))
-    {
-        return;
-    }
+    check_status(status);
 }
 
 void search(int socket)
@@ -468,7 +463,7 @@ int main()
     server_address.sin_port = htons(PORT);
 
     // Convert IPv4 and IPv6 addresses from text to binary form
-    if (inet_pton(AF_INET, "192.168.253.128", &server_address.sin_addr) <= 0) {
+    if (inet_pton(AF_INET, IP_ADDRESS, &server_address.sin_addr) <= 0) {
         perror("Invalid address/ Address not supported");
         exit(EXIT_FAILURE);
     }
