@@ -84,19 +84,34 @@ Before running the client, make sure to change the IP_ADDRESS to match the serve
 ## Tests
 After connecting to the server using the client, you can test various commands:
 
-**LIST**: Print the file list.
+- Print the file list.
+```
+LIST       
+```
+- Download the file or print an error message.
+```
+DOWNLOAD <file_path> 
+```
+- Upload content to a file.
+```
+UPLOAD <file_path> <content>   
+```
+- Delete a file or print an error message.
+ ```
+DELETE <file_path>       
+```
+- Move a file or print an error message.
+``` 
+MOVE <file_path_source> <file_path_destination>   
+```
+- Update a file or print an error message.
+```
+UPDATE <start_poz> <content>               
+```
 
-**DOWNLOAD** <file_path>: Download the file or print an error message.
+Print files containing the specified word or nothing if none are found. Note that a file may contain a word without being in the top ten words.
 
-**UPLOAD** <file_path> <content>: Upload content to a file.
-
-**DELETE** <file_path>: Delete a file or print an error message.
-
-**MOVE** <file_path_source> <file_path_destination>: Move a file or print an error message.
-
-**UPDATE** <start_poz> <content>: Update a file or print an error message.
-
-**SEARCH** <word>: Print files containing the specified word or nothing if none are found. Note that a file may contain a word without being in the top ten words.
+**SEARCH** <word>                                       
 
 ## Makefile
 To create the server and client executable files run in terminal:
